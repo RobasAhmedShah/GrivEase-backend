@@ -85,7 +85,7 @@ export const signIn = functions.https.onRequest((req: Request, res: Response) =>
 
 // Add a New Grievance
 // Hardcode your Gemini API key here (not recommended in production)
-const GEMINI_API_KEY = "AIzaSyDoVXZQR0ZQPOUPK71cJF-0fo-sLa7bJUs";
+const GEMINI_API_KEY = process.env.GEMINI_KEY;
 const GEMINI_ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=" + GEMINI_API_KEY;
 
 export const addGrievance = functions.https.onRequest((req: Request, res: Response) => {
