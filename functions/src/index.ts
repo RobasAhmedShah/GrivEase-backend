@@ -1,4 +1,4 @@
-import * as functions from "firebase-functions";
+import { onRequest } from 'firebase-functions/v2/https';
 import * as admin from "firebase-admin";
 import { Request, Response } from "express";
 import cors from "cors";
@@ -27,7 +27,7 @@ const corsHandler = cors({
 });
 
 // Sign Up (Register a new user)
-export const signUp = functions.https.onRequest((req: Request, res: Response) => {
+export const signUp = onRequest((req: Request, res: Response) => {
   corsHandler(req, res, async () => {
     const { email, password } = req.body;
 
@@ -55,7 +55,7 @@ export const signUp = functions.https.onRequest((req: Request, res: Response) =>
 });
 
 // Sign In (Authenticate user and return a custom token)
-export const signIn = functions.https.onRequest((req: Request, res: Response) => {
+export const signIn = onRequest((req: Request, res: Response) => {
   corsHandler(req, res, async () => {
     const { email, password } = req.body;
 
@@ -88,7 +88,7 @@ export const signIn = functions.https.onRequest((req: Request, res: Response) =>
 const GEMINI_API_KEY = process.env.GEMINI_KEY;
 const GEMINI_ENDPOINT = "https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash-latest:generateContent?key=" + GEMINI_API_KEY;
 
-export const addGrievance = functions.https.onRequest((req: Request, res: Response) => {
+export const addGrievance = onRequest((req: Request, res: Response) => {
   corsHandler(req, res, async () => {
     const {
       title,
@@ -224,7 +224,7 @@ Respond with a single JSON object in this exact format (no extra text):
 });
 
 // Fetch All Grievances
-export const fetchAllGrievances = functions.https.onRequest((req: Request, res: Response) => {
+export const fetchAllGrievances = onRequest((req: Request, res: Response) => {
   corsHandler(req, res, async () => {
     try {
       const grievancesQuery = db.collection("grievances");
@@ -249,7 +249,7 @@ export const fetchAllGrievances = functions.https.onRequest((req: Request, res: 
 });
 
 // Fetch Grievance by ID
-export const fetchGrievanceById = functions.https.onRequest((req: Request, res: Response) => {
+export const fetchGrievanceById = onRequest((req: Request, res: Response) => {
   corsHandler(req, res, async () => {
     const { grievanceId } = req.query;
 
@@ -282,7 +282,7 @@ export const fetchGrievanceById = functions.https.onRequest((req: Request, res: 
 });
 
 // Update Grievance Status
-export const updateGrievanceStatus = functions.https.onRequest((req: Request, res: Response) => {
+export const updateGrievanceStatus = onRequest((req: Request, res: Response) => {
   corsHandler(req, res, async () => {
     const { grievanceId, status } = req.body;
 
@@ -321,7 +321,7 @@ export const updateGrievanceStatus = functions.https.onRequest((req: Request, re
 
 
 
-export const getAnalytics = functions.https.onRequest(async (req: Request, res: Response) => {
+export const getAnalytics = onRequest(async (req: Request, res: Response) => {
   corsHandler(req, res, async () => {
   try {
     // Initialize breakdown objects
@@ -439,7 +439,7 @@ export const getAnalytics = functions.https.onRequest(async (req: Request, res: 
 });
 
 // Send WhatsApp Message (API endpoint)
-export const sendWhatsAppMessage = functions.https.onRequest((req: Request, res: Response) => {
+export const sendWhatsAppMessage = onRequest((req: Request, res: Response) => {
   corsHandler(req, res, async () => {
     const { to, body, from, mediaUrls } = req.body;
 
@@ -465,7 +465,7 @@ export const sendWhatsAppMessage = functions.https.onRequest((req: Request, res:
   });
 });
 
-export const uploadTwilioMediaToStorage = functions.https.onRequest((req, res) => {
+export const uploadTwilioMediaToStorage = onRequest((req, res) => {
   corsHandler(req, res, async () => {
     const { contactNumber, mediaUrl } = req.body;
 
@@ -536,8 +536,8 @@ export const uploadTwilioMediaToStorage = functions.https.onRequest((req, res) =
 });
   
 //Get media from storage
-export const getTwilioMediaFromStorage = functions.https.onRequest((req: Request, res: Response) => {
-    corsHandler(req, res, async () => {
+export const getTwilioMediaFromStorage = onRequest((req: Request, res: Response) => {
+  corsHandler(req, res, async () => {
       const { contactNumber,extension } = req.query;
   
       if (!contactNumber) {
